@@ -79,10 +79,6 @@ exports.createBlogPost = async (
       main_image: mainImage.name,
       additional_images: processedAdditionalImages,
       date_time: moment.unix(date_time).toISOString(),
-      title_slug: slugify(title, {
-        lower: true,
-        remove: /[*+~.()'"!:@]/g,
-      }),
     };
 
     blogs.push(blogPost);
@@ -102,6 +98,10 @@ exports.getBlogPosts = () => {
     const formattedBlogs = blogs.map((blog) => ({
       ...blog,
       date_time: new Date(blog.date_time).toISOString(),
+      title_slug: slugify(blog.title, {
+        lower: true,
+        remove: /[*+~.()'"!:@]/g,
+      }).toString().toLowerCase().replace(/-/g, '_').trim(),
     }));
 
     return formattedBlogs;
@@ -121,12 +121,8 @@ exports.generateToken = (imagePath) => {
   }
 };
 
-exports.getImage = (imagePath, token) => {
+exports.getImage = (imagePath) => {
   try {
-    const decoded = jwt.verify(token, secretKey);
-    if (decoded.image_path !== imagePath) {
-      throw new Error("Invalid token or image path.");
-    }
     const imageFilePath = path.join(imagesDir, imagePath);
     return imageFilePath;
   } catch (error) {

@@ -10,7 +10,7 @@ exports.verifyTokenAndImagePath = (req, res, next) => {
     if (!image_path || !token) {
       return new ErrorResponse("Invalid token or image path.", 400).send(res);
     }
-    const decoded = jwt.verify(token, secretKey);
+    const decoded = jwt.verify(token, secretKey, { maxAge: "5m" } );
     if (decoded.image_path !== image_path) {
       return new ErrorResponse("Invalid token or image path.", 400).send(res);
     }

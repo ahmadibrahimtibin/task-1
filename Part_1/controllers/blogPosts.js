@@ -1,10 +1,14 @@
 const fs = require("fs");
 const path = require("path");
+const jwt = require("jsonwebtoken")
 
-const blogService = require("../services/blogPosts");
+const {getBlogPosts, createBlogPost, getImage} = require("../services/blogPosts");
 const ErrorResponse = require("../utils/errorResponse");
 const { standardResponse } = require("../utils/standardResponse");
+const { env } = require("../config/env");
 const blogsFilePath = path.join(__dirname, "../blogs.json");
+const secretKey = env?.SECRET_KEY;
+
 
 exports.createBlogPost = async (req, res) => {
   const { title, description, date_time } = req.body;
@@ -12,7 +16,7 @@ exports.createBlogPost = async (req, res) => {
   const additionalImages = req.files.additional_images;
 
   try {
-    const blogPost = await blogService.createBlogPost(
+    const blogPost = await createBlogPost(
       title,
       description,
       date_time,
@@ -28,11 +32,7 @@ exports.createBlogPost = async (req, res) => {
 
 exports.getBlogPosts = (req, res) => {
   try {
-    const blogs = JSON.parse(fs.readFileSync(blogsFilePath));
-    const formattedBlogs = blogs.map((blog) => ({
-      ...blog,
-      date_time: new Date(blog.date_time).toISOString(),
-    }));
+    const formattedBlogs = getBlogPosts()
     standardResponse(res, formattedBlogs);
   } catch (error) {
     return new ErrorResponse("Error getting blog posts", 500).send(res);
@@ -52,7 +52,7 @@ exports.generateToken = (req, res) => {
 exports.getImage = (req, res) => {
   const { image_path } = req.query;
   try {
-    const imageFilePath = blogService.getImage(image_path);
+    const imageFilePath = getImage(image_path);
     res.type("jpg").sendFile(imageFilePath);
   } catch (error) {
     console.error("Error getting image:", error);

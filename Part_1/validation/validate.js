@@ -3,6 +3,8 @@ const isEmpty = require("./isEmpty");
 const ErrorResponse = require("../utils/errorResponse");
 
 module.exports.validateBlogPost = (req, res, next) => {
+  const data = req.body;
+  const main_image = req.files?.main_image
   let errors = {};
 
   // Title Validation
@@ -24,7 +26,7 @@ module.exports.validateBlogPost = (req, res, next) => {
   }
 
   // Main Image Validation (Validation for main image file extension will be done at file upload level)
-  if (!data.main_image) {
+  if (!main_image) {
     errors.main_image = "Main image is required";
   }
 
@@ -34,12 +36,15 @@ module.exports.validateBlogPost = (req, res, next) => {
     errors.date_time = "Date time field is required";
   } else if (!Validator.isNumeric(data.date_time)) {
     errors.date_time = "Date time must be a Unix timestamp";
-  } else if (data.date_time < Date.now()) {
+  } else if (data.date_time > Date.now()) {
     errors.date_time = "Date time cannot be in the past";
   }
 
   if (Object.keys(errors).length > 0) {
-    return new ErrorResponse(errors, 400).send(res);
+    const errorMessages = Object.keys(errors).map((key) => ({
+      message: errors[key],
+    }));
+    return new ErrorResponse(errorMessages[0].message, 400).send(res);
   } else {
     next();
   }
