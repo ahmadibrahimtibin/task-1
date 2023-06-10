@@ -25,3 +25,5 @@ app.listen(port, () => {
     `Server listening at http://localhost:${port} in ${env?.NODE_ENV} mode`
   );
 });
+
+module.exports = app;
