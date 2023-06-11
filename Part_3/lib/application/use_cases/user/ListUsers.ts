@@ -1,3 +1,3 @@
-import { ServiceLocator } from '../../../infrastructure/config/service-locator';
+const { ServiceLocator } = require('../../../infrastructure/config/service-locator');
 
-export default async ({ userRepository }: ServiceLocator) => userRepository!.find();
+module.exports = async ({ userRepository }) => userRepository.find();

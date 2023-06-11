@@ -1,13 +1,6 @@
-import Entity, { ID } from './Entity';
+const Entity = require('./Entity');
 
-export default class User extends Entity {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-  accessToken?: string;
-
+class User extends Entity {
   constructor({
     id,
     firstName,
@@ -16,14 +9,6 @@ export default class User extends Entity {
     phone,
     password,
     accessToken,
-  }: {
-    id?: ID,
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string,
-    password: string,
-    accessToken?: string;
   }) {
     super({ id });
     this.firstName = firstName;
@@ -33,4 +18,6 @@ export default class User extends Entity {
     this.password = password;
     this.accessToken = accessToken;
   }
-};
+}
+
+module.exports = User;

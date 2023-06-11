@@ -1,8 +1,8 @@
-import User from '../../../domain/entities/User';
-import UserValidator from '../../../domain/validators/UserValidator';
-import { ServiceLocator } from '../../../infrastructure/config/service-locator';
+const User = require('../../../domain/entities/User').default;
+const UserValidator = require('../../../domain/validators/UserValidator').default;
+const { ServiceLocator } = require('../../../infrastructure/config/service-locator');
 
-export default async (userData: any, { userRepository, passwordManager }: ServiceLocator) => {
+module.exports = async (userData, { userRepository, passwordManager }) => {
   await UserValidator.tailor('create').validateAsync(userData);
   const user = new User({
     firstName: userData.firstName,
@@ -11,5 +11,5 @@ export default async (userData: any, { userRepository, passwordManager }: Servic
     phone: userData.phone,
     password: passwordManager.hash(userData.password, 12),
   });
-  return userRepository!.persist(user);
+  return userRepository.persist(user);
 };

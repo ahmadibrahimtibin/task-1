@@ -1,13 +1,12 @@
-export type ID = string | number;
+// Define the ID type
+exports.ID = String || Number;
 
-export default abstract class Entity {
-  id?: ID;
-
-  constructor({
-    id
-  }: {
-    id?: ID
-  }) {
+// Define the Entity class
+class Entity {
+  constructor({ id }) {
     this.id = id;
   }
 }
+
+// Export the Entity class as the default export
+module.exports = Entity;

@@ -1,7 +1,7 @@
-import { ServiceLocator } from "../../../infrastructure/config/service-locator";
+const { ServiceLocator } = require('../../../infrastructure/config/service-locator');
 
-export default async (email: string, { userRepository }: ServiceLocator) => {
-  const user = await userRepository!.getByEmail(email);
+module.exports = async (email, { userRepository }) => {
+  const user = await userRepository.getByEmail(email);
   if (!user) {
     return null;
   }

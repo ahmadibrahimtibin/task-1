@@ -1,7 +1,7 @@
-import { ServiceLocator } from "../../../infrastructure/config/service-locator";
+const { ServiceLocator } = require("../../../infrastructure/config/service-locator");
 
-export default (accessToken: string, { accessTokenManager }: ServiceLocator) => {
-  const decoded: any = accessTokenManager.decode(accessToken);
+module.exports = (accessToken, { accessTokenManager }) => {
+  const decoded = accessTokenManager.decode(accessToken);
   if (!decoded) {
     throw new Error('Invalid access token');
   }

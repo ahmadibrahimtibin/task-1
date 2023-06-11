@@ -13,4 +13,4 @@ export default interface UserRepository {
   getByEmail(email: string): Promise<User | null>;
 
   find(): Promise<User[]>;
-};
+}

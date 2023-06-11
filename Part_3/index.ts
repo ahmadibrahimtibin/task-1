@@ -1,6 +1,7 @@
-import "ts-node/register";
-import bootstrap from "./lib/infrastructure/config/bootstrap";
-import createServer from "./lib/infrastructure/webserver/server";
+// Remove the line: import "ts-node/register";
+
+const bootstrap = require("./lib/infrastructure/config/bootstrap");
+const createServer = require("./lib/infrastructure/webserver/server");
 
 // Start the server
 const start = async () => {
